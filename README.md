@@ -1,6 +1,6 @@
 Prandtl-Meyer / Quasi-1D Nozzle Solver
 
-Code is complete. Readme will be updated soon.
+Code is complete. ReadMe will be updated soon.
 
 Features:
 - MacCormack predictor-corrector
