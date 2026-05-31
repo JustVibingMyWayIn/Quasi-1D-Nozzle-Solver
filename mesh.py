@@ -1,4 +1,3 @@
-#mesh generation mesh.py
 import numpy as np
 
 def generate_mesh(n, length):

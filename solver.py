@@ -77,12 +77,3 @@ def maccormack_step(U1,U2,U3,area,dx,gamma,CFL,Cx,exit_pressure):
     U1, U2, U3 = apply_boundary_conditions(U1,U2,U3,area,gamma,exit_pressure)
 
     return U1, U2, U3
-
-'''print(f"Exit pressure BC = {EXIT_PRESSURE}")
-
-if EXIT_PRESSURE is None:
-    print("Running supersonic outlet case")
-else:
-    print(
-        f"Running pressure outlet case: {EXIT_PRESSURE}"
-    )'''
