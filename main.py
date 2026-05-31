@@ -12,6 +12,7 @@ CX = 0.2
 ITERATIONS = 2000
 EXIT_PRESSURE = 0.674
 
+
 # mesh
 x, dx, area = generate_mesh(N,LENGTH)
 
