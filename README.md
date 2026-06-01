@@ -1,8 +1,8 @@
-Prandtl-Meyer / Quasi-1D Nozzle Solver
+Quasi-1D Nozzle Solver
 
 Code is complete. ReadMe will be updated soon.
 
-##To change simulation parameters
+#To change simulation parameters
 Edit the variables near the top of main.py:
 
 - EXIT_PRESSURE
