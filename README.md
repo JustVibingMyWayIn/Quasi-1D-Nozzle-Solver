@@ -11,6 +11,9 @@ Edit the variables near the top of main.py:
 - N_POINTS
 - MAX_ITER
 
+- Changing Area Breaks the code because of unstable initial conditions
+- A code to accommodate area changes needs to be implemented
+
 Features:
 - MacCormack predictor-corrector
 - Artificial viscosity
