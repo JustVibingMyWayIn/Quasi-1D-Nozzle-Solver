@@ -35,13 +35,9 @@ transonic and shock-containing cases.
 
 The solver advances the following conservative variables:
 
-\[ U_1 = `\rho `{=tex}A \]
-
-\[ U_2 = `\rho `{=tex}u A \]
-
-\[ U_3 =
-`\rho `{=tex}A`\left`{=tex}(`\frac{T}{\gamma-1}`{=tex}+`\frac{\gamma}{2}`{=tex}u\^2`\right`{=tex})
-\]
+$$U_1 = \rho A$$
+$$U_2 = \rho u A$$
+$$U_3 = \rho A \left(\frac{T}{\gamma - 1}+\frac{\gamma}{2}u^2\right)$$
 
 The quasi-one-dimensional Euler equations are solved with geometric
 source terms arising from nozzle area variation.
@@ -68,7 +64,7 @@ and improve convergence in shock-capturing cases.
 
 The default converging-diverging nozzle is defined by
 
-\[ A(x)=1+2.2(x-1.5)\^2 \]
+$$\[ A(x)=1+2.2(x-1.5)\^2 \]$$
 
 with the area normalized by the throat area.
 
@@ -93,7 +89,7 @@ postprocess.py             # Visualization
 
 The solver was marched for approximately 2500 iterations. The residuals
 for continuity, momentum, and energy decrease by several orders of
-magnitude, reaching the prescribed convergence tolerance of (10\^{-8}).
+magnitude, reaching the prescribed convergence tolerance of $$(10\^{-8})$$.
 
 The oscillatory behavior during convergence is characteristic of the
 transient approach to the steady solution, while the overall downward
