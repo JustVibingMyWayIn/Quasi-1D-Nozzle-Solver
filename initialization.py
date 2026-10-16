@@ -1,27 +1,27 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from physics import primitive_to_conservative
+from Analytical import Analytical
 
-def initialize_flow(x, area, gamma):
-    rho = np.zeros_like(x)
-    temperature = np.zeros_like(x)
+def initialize_flow(x, area, gamma, exit_pressure=None, nozzle=None, show_plot=False):
+    #Geometry independent initial condition: the quasi-1D isentropic (or normal shock) solution
+    #for the supplied area distribution, with reservoir conditions p0 = rho0 = T0 = 1
+    analytical = Analytical(exit_pressure, area, gamma, x=x, nozzle=nozzle)
+    solution = analytical.solve()
 
-    mask1 = x <= 0.5
-    mask2 = (x > 0.5) & (x <= 1.5)
-    mask3 = (x > 1.5) & (x <= 2.1)
-    mask4 = x > 2.1
+    mach = solution["mach"]
+    temperature = solution["temperature"]
+    rho = solution["density"]
+    velocity = mach * np.sqrt(temperature)
 
-    rho[mask1] = 1.0
-    temperature[mask1] = 1.0
-    rho[mask2] = 1 - 0.366 * (x[mask2] - 0.5)
-    temperature[mask2] = 1 - 0.167 * (x[mask2] - 0.5)
-
-    rho[mask3] = 0.634 - 0.702 * (x[mask3] - 1.5)
-    temperature[mask3] = 0.833 - 0.490 * (x[mask3] - 1.5)
-
-    rho[mask4] = 0.589 + 0.102 * (x[mask4] - 2.1)
-    temperature[mask4] = 0.94 + 0.062 * (x[mask4] - 2.1)
-
-    velocity = 0.58 / (rho * area)
+    if show_plot:
+        plt.plot(x, mach, label='INITIAL MACH NUMBER')
+        plt.xlabel('Position')
+        plt.ylabel('Mach Number')
+        plt.title('Initial Flow Field')
+        plt.legend()
+        plt.grid(True)
+        plt.show()
 
     U1, U2, U3 = primitive_to_conservative(rho, velocity, temperature, area, gamma)
 

@@ -75,5 +75,15 @@ def maccormack_step(U1,U2,U3,area,dx,gamma,CFL,Cx,exit_pressure):
     U3[1:-1] += (0.5*(dU3dt+dU3dt_p)*dt+S3_p)
 
     U1, U2, U3 = apply_boundary_conditions(U1,U2,U3,area,gamma,exit_pressure)
+    #debug code
+    '''if np.any(temperature <= 0):
+        idx = np.argmin(temperature)
+
+        print("Negative T!")
+        print("iter =", iteration)
+        print("x =", x[idx])
+        print("T =", temperature[idx])
+        print("rho =", density[idx])
+        print("u =", velocity[idx])'''
 
     return U1, U2, U3
