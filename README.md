@@ -15,7 +15,7 @@ Concretely, the solver:
 - Initializes and validates the numerical steady state against a closed-form analytical solution (isentropic, and isentropic-with-a-normal-shock) of the same quasi-1D equations.
 - Reports convergence behavior and discretization error so that the fidelity of the FDM solution can be judged quantitatively.
 
-This is a from-scratch numerical methods project, not a wrapper around an existing CFD package — the flux evaluation, time-stepping, artificial viscosity, boundary conditions, and the analytical reference solution are all implemented directly.
+This is a from-scratch numerical methods project, not a wrapper around an existing CFD package - the flux evaluation, time-stepping, artificial viscosity, boundary conditions, and the analytical reference solution are all implemented directly.
 
 ---
 
@@ -37,8 +37,8 @@ The local Mach number, pressure, density, and temperature are recovered from the
 
 The governing equations are integrated in pseudo-time using MacCormack's explicit two-step scheme:
 
-1. **Predictor step** — forward-difference spatial derivatives advance the solution by one time step.
-2. **Corrector step** — backward-difference spatial derivatives are applied to the predicted state.
+1. **Predictor step** - forward-difference spatial derivatives advance the solution by one time step.
+2. **Corrector step** - backward-difference spatial derivatives are applied to the predicted state.
 3. The final update is the average of the predicted and corrected time derivatives, giving the scheme second-order accuracy in space while remaining explicit.
 
 ### Time Stepping
@@ -55,7 +55,7 @@ At every iteration, the RMS change in each conservative variable between success
 
 ### Physical-Validity Guard
 
-`physics.check_physical` checks every field after each step for non-positive density/temperature or non-finite values and raises an immediate, descriptive error (rather than silently propagating NaNs) if the solution becomes unphysical — pointing to the likely remedy (lower CFL, higher artificial viscosity coefficient, or a finer grid).
+`physics.check_physical` checks every field after each step for non-positive density/temperature or non-finite values and raises an immediate, descriptive error (rather than silently propagating NaNs) if the solution becomes unphysical - pointing to the likely remedy (lower CFL, higher artificial viscosity coefficient, or a finer grid).
 
 ---
 
@@ -82,7 +82,7 @@ The class also locates the throat (global area minimum) precisely via bounded sc
 
 ## Initial Conditions and Analytical Reference Solution
 
-`Analytical.py` implements the closed-form quasi-1D isentropic flow solution (and the isentropic-flow-with-a-normal-shock solution) for a given area distribution and exit pressure, using the area–Mach relation solved numerically with Brent's method. It determines the flow regime for a given back pressure — subsonic throughout, shock-free supersonic (design condition), a normal shock standing inside the duct, or over-expanded with the shock pushed outside the duct — and, where a shock stands inside the duct, locates it by root-finding on the downstream exit-pressure match.
+`Analytical.py` implements the closed-form quasi-1D isentropic flow solution (and the isentropic-flow-with-a-normal-shock solution) for a given area distribution and exit pressure, using the area–Mach relation solved numerically with Brent's method. It determines the flow regime for a given back pressure - subsonic throughout, shock-free supersonic (design condition), a normal shock standing inside the duct, or over-expanded with the shock pushed outside the duct - and, where a shock stands inside the duct, locates it by root-finding on the downstream exit-pressure match.
 
 This analytical solution serves two roles in the project:
 
@@ -96,7 +96,7 @@ This analytical solution serves two roles in the project:
 `boundary_conditions.py` implements:
 
 - **Subsonic reservoir inlet**: stagnation pressure and temperature are held fixed at the reservoir values, while the inlet velocity is linearly extrapolated from the interior; static density and temperature then follow isentropically. This remains valid even when the inlet Mach number is not small.
-- **Subsonic outlet**: a specified static back pressure is imposed, with density and velocity extrapolated from the interior — producing either a fully subsonic profile or a normal shock inside the duct, depending on the pressure ratio.
+- **Subsonic outlet**: a specified static back pressure is imposed, with density and velocity extrapolated from the interior - producing either a fully subsonic profile or a normal shock inside the duct, depending on the pressure ratio.
 - **Supersonic outlet**: all variables are linearly extrapolated from the interior, appropriate when the exit flow is supersonic and no physical boundary condition should be imposed there.
 
 ---
@@ -128,7 +128,7 @@ python main.py
 
 `main.py` is the single entry point. The nozzle geometry, grid size `N`, CFL number, artificial viscosity coefficient `CX`, exit pressure (or `None` for a fully supersonic/shock-free exit), and convergence tolerance are all set as constants at the top of the file. Several alternative nozzle definitions (cosine contour, custom function, radius-based, point-based, CSV-based) are included as commented-out examples, so swapping geometries does not require touching any solver code.
 
-Running `main.py` prints the detected throat location and equivalent wall half-angle, reports whether the run converged (and after how many iterations), and then produces three plots: the converged flow-field distributions, the numerical-vs-analytical Mach comparison with absolute and relative error, and the residual convergence history — along with the max/mean/RMS Mach-number error against the analytical solution for that run.
+Running `main.py` prints the detected throat location and equivalent wall half-angle, reports whether the run converged (and after how many iterations), and then produces three plots: the converged flow-field distributions, the numerical-vs-analytical Mach comparison with absolute and relative error, and the residual convergence history - along with the max/mean/RMS Mach-number error against the analytical solution for that run.
 
 ---
 
@@ -146,17 +146,17 @@ The converged Mach-number distribution is compared against the closed-form isent
 
 <img width="1669" height="831" alt="Numerical vs analytical Mach number, with absolute and relative error" src="https://github.com/user-attachments/assets/63db4fda-c52d-45aa-acd1-a3fe9af40fd9" />
 
-The absolute Mach-number error remains small across the domain, with the largest deviations near the throat and in regions of rapid flow transition. The relative error is largest near the inlet, which is expected since the Mach number itself is small there, making the relative metric more sensitive to small absolute differences — it decreases substantially through the rest of the duct.
+The absolute Mach-number error remains small across the domain, with the largest deviations near the throat and in regions of rapid flow transition. The relative error is largest near the inlet, which is expected since the Mach number itself is small there, making the relative metric more sensitive to small absolute differences - it decreases substantially through the rest of the duct.
 
 ---
 
 ## Applications
 
-A validated quasi-1D FDM nozzle model like this one is primarily a tool for fast, physically grounded **engineering judgment** — the kind of first-pass analysis used to size a design or sanity-check a more expensive one before committing resources to higher-fidelity work. Representative uses include:
+A validated quasi-1D FDM nozzle model like this one is primarily a tool for fast, physically grounded **engineering judgment** - the kind of first-pass analysis used to size a design or sanity-check a more expensive one before committing resources to higher-fidelity work. Representative uses include:
 
 - **Preliminary nozzle sizing and trade studies.** Rapidly sweeping throat area, expansion (exit-to-throat area) ratio, and overall contour for rocket, turbojet/turbofan, or ramjet exhaust nozzles, well before a 3D CAD model or mesh exists.
 - **Choked mass flow rate estimation.** Computing the critical pressure ratio and resulting mass flow through a throat, relevant to flow metering devices (venturi/flow nozzles) and to sizing propulsion feed systems.
-- **Design-condition and off-design screening.** Determining, for a given area ratio, the back pressure at which a nozzle runs shock-free (subsonic or supersonic design) versus the pressure range over which a normal shock sits inside the duct — informing where a design will under- or over-expand.
+- **Design-condition and off-design screening.** Determining, for a given area ratio, the back pressure at which a nozzle runs shock-free (subsonic or supersonic design) versus the pressure range over which a normal shock sits inside the duct - informing where a design will under- or over-expand.
 - **Operating-envelope / altitude-sensitivity studies.** For rocket nozzles, approximating how exit flow behavior (and hence a first-order estimate of thrust coefficient) shifts as ambient back pressure changes with altitude.
 - **Supersonic wind-tunnel nozzle contour checks.** Verifying that a candidate area distribution reaches the intended test-section Mach number shock-free before refining the contour with a full method-of-characteristics design.
 - **A fast baseline against 3D CFD.** Serving as a cheap, independent check on mass flow, throat Mach number, or exit conditions predicted by a full 2D/3D Navier–Stokes simulation of the same nozzle, to catch gross modeling or setup errors early.
@@ -168,10 +168,10 @@ A validated quasi-1D FDM nozzle model like this one is primarily a tool for fast
 
 These are limitations of the **quasi-1D physical model itself**, not just this implementation — no amount of additional coding effort on this codebase removes them, because they follow from the governing assumptions.
 
-- **No cross-sectional variation.** Flow properties are assumed uniform across each cross-section. The model cannot capture boundary-layer growth along the wall, flow separation, or non-uniform velocity/pressure profiles across the duct — all of which require at least a 2D (axisymmetric) treatment.
+- **No cross-sectional variation.** Flow properties are assumed uniform across each cross-section. The model cannot capture boundary-layer growth along the wall, flow separation, or non-uniform velocity/pressure profiles across the duct - all of which require at least a 2D (axisymmetric) treatment.
 - **Inviscid and adiabatic.** There is no viscosity or heat transfer in the governing equations, so wall friction losses, viscous boundary-layer blockage of the effective flow area, and real discharge coefficients are not predicted. These must come from empirical correlations, boundary-layer corrections, or higher-fidelity viscous CFD.
 - **Breaks down for strongly divergent geometries.** The quasi-1D assumption is only accurate for small equivalent wall half-angles; the geometry module itself flags nozzles whose wall angle grows large as geometries where "the quasi-1D assumption is questionable." Short, abruptly diverging, or non-smooth nozzle shapes fall outside the model's valid range.
-- **Only a single, normal, duct-axis shock is resolved.** The analytical and numerical machinery can capture one normal shock standing perpendicular to the axis. It cannot predict oblique shocks, shock trains, Mach-disk structures in under-expanded jets, or shock/boundary-layer interaction — the analytical model explicitly labels over-expanded exhaust as "not resolved by 1D theory" once the shock structure moves outside the duct.
+- **Only a single, normal, duct-axis shock is resolved.** The analytical and numerical machinery can capture one normal shock standing perpendicular to the axis. It cannot predict oblique shocks, shock trains, Mach-disk structures in under-expanded jets, or shock/boundary-layer interaction - the analytical model explicitly labels over-expanded exhaust as "not resolved by 1D theory" once the shock structure moves outside the duct.
 - **No true 3D nozzle-shape effects.** Asymmetric, scarfed, plug, or rectangular nozzle geometries, and any secondary or swirling flow structures, are outside what a 1D area distribution can represent.
 - **Ideal, calorically perfect gas.** A constant ratio of specific heats is assumed throughout. Real-gas effects, combustion chemistry, variable specific heats with temperature, and two-phase (e.g. particulate-laden rocket exhaust) flows are not modeled.
 - **Steady-state design tool, not a transient simulator.** The time-marching here is a pseudo-time method used to reach a steady solution; it does not represent genuine unsteady phenomena such as engine start-up/shutdown transients, flow oscillations, or combustion instability.
